@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>RPS</title>
+</head>
+
+<body>
+    <div>
+        <button onclick='rps("rock")'>✊</button>
+        <button onclick='rps("paper")'>✋</button>
+        <button onclick='rps("scissors")'>✌️</button>
+        <p id="clicked"></p>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const id = new Date().getTime()
+        socket.emit('login', { userId: id });
+
+        function rps(chosen) {
+            const playerChosen = { msg: chosen, id: id }
+            socket.emit('rps', playerChosen);
+        }
+
+        socket.on('rps', function (msg) {
+            document.getElementById("clicked").innerHTML = msg;
+        });
+    </script>
+</body>
+
+</html>
